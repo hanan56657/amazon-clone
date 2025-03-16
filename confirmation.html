@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Amazon Clone</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .confirmation-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .confirmation-container h1 {
+            color: #2874f0;
+            margin-bottom: 20px;
+        }
+        .order-summary {
+            margin-top: 20px;
+        }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .order-total {
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img src="Amazon-Logo.jpg" alt="Amazon Logo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="confirmation-container">
+            <h1>Order Confirmation</h1>
+            <p>Thank you for your purchase! Your order has been confirmed.</p>
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+                <div id="orderItems"></div>
+                <div id="orderTotal" class="order-total"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            © 2024 Amazon Clone. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartData = JSON.parse(localStorage.getItem('cartData'));
+            const cartTotal = localStorage.getItem('cartTotal');
+            const orderItems = document.getElementById('orderItems');
+            const orderTotal = document.getElementById('orderTotal');
+
+            if (cartData && cartData.length > 0) {
+                cartData.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'order-item';
+                    itemElement.innerHTML = `
+                        <span>${item.name} x ${item.quantity}</span>
+                        <span>₹${item.price * item.quantity}</span>
+                    `;
+                    orderItems.appendChild(itemElement);
+                });
+                orderTotal.textContent = cartTotal;
+            } else {
+                orderItems.innerHTML = '<p>No items in the order.</p>';
+                orderTotal.textContent = 'Total: ₹0';
+            }
+
+            // Clear the cart data from localStorage
+            localStorage.removeItem('cartData');
+            localStorage.removeItem('cartTotal');
+        });
+    </script>
+</body>
+</html>
